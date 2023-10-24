@@ -313,6 +313,15 @@
               "title": "Drawer 抽屉"
             }
           ]
+        },
+        {
+          "groupName": "Ext",
+          "list": [
+            {
+              "path": "/draggable-table",
+              "title": "DraggableTable 拖动表格"
+            }
+          ]
         }
       ]
     }

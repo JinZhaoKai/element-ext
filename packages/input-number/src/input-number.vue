@@ -42,6 +42,12 @@
       @focus="handleFocus"
       @input="handleInput"
       @change="handleInputChange">
+      <div slot="prepend" v-if="$slots.prepend && !controls">
+        <slot name="prepend"></slot>
+      </div>
+      <div slot="append" v-if="$slots.append && !controls">
+        <slot name="append"></slot>
+      </div>
     </el-input>
   </div>
 </template>
