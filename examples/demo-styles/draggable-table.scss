@@ -1,10 +1,9 @@
 /* 表格设置按钮样式 */
 .setting {
-    position: relative;
-    vertical-align: middle;
-}
+  position: relative;
+  vertical-align: middle;
 
-.setting__content {
+  &__content {
     border-radius: 10px;
     color: #909399;
     display: inline-block;
@@ -16,19 +15,28 @@
     white-space: nowrap;
     border: 1px solid #EBEEF5;
     cursor: pointer;
-}
 
-.setting__content.is-fixed {
-    position: absolute;
-    top: -5px;
-    transform: translateY(-100%);
-}
+    &.is-fixed {
+      position: absolute;
+      transform: translateY(-100%);
 
-.setting__content.is-fixed.right {
-    right: 10px;
-}
+      &.left-top {
+        top: -5px;
+        left: 10px;
+      }
 
-.setting__checkbox .el-checkbox {
+      &.right-top {
+        top: -5px;
+        right: 10px;
+      }
+
+    }
+
+  }
+
+  &__checkbox .el-checkbox {
     display: block;
     margin-bottom: 5px;
+  }
+
 }

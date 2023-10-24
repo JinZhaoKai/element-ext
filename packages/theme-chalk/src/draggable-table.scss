@@ -1,5 +1,42 @@
-@import "mixins/mixins";
+/* 表格设置按钮样式 */
+.setting {
+    position: relative;
+    vertical-align: middle;
 
-@include b(draggableTable) {
-    border: 1px solid red;
+    &__content {
+        border-radius: 10px;
+        color: #909399;
+        display: inline-block;
+        font-size: 20px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 10px;
+        text-align: center;
+        white-space: nowrap;
+        border: 1px solid #EBEEF5;
+        cursor: pointer;
+
+        &.is-fixed {
+            position: absolute;
+            transform: translateY(-100%);
+
+            &.left-top {
+                top: -5px;
+                left: 10px;
+            }
+
+            &.right-top {
+                top: -5px;
+                right: 10px;
+            }
+
+        }
+
+    }
+
+    &__checkbox .el-checkbox {
+        display: block;
+        margin-bottom: 5px;
+    }
+
 }

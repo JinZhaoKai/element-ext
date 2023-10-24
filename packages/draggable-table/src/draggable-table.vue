@@ -1,6 +1,7 @@
 <template>
   <div class="setting">
-    <el-table ref="draggableTable" :class="draggable ? 'el-draggable-table' : ''" v-bind="$attrs" @header-dragend="defaultColumnWidthChange" v-if="showTable">
+    <el-table ref="draggableTable" :class="draggable ? 'el-draggable-table' : ''" v-bind="$attrs"
+              @header-dragend="defaultColumnWidthChange" v-if="showTable">
       <slot></slot>
     </el-table>
     <el-popover width="150" trigger="click">
@@ -9,8 +10,7 @@
           <el-checkbox v-for="item in allColumns" :label="item.id" :key="item.id">{{ item.label }}</el-checkbox>
         </el-checkbox-group>
       </div>
-      <div v-if="draggable && settingIsShow" slot="reference"
-        :class="settingPosition === 'right' ? 'setting__content is-fixed right' : 'setting__content is-fixed'">
+      <div v-if="draggable && settingBtn" slot="reference" :class="settingPositionClass">
         <em class="el-icon-setting"></em>
       </div>
     </el-popover>
@@ -32,7 +32,12 @@ export default {
     ElCheckbox,
     ElCheckboxGroup
   },
-
+  data() {
+    return {
+      // 是否显示表格,主要功能是拖动列后通过隐藏再显示的方式实现刷新表格的功能
+      showTable: true
+    };
+  },
   props: {
 
     // 拖动模式
@@ -41,15 +46,16 @@ export default {
       default: false
     },
 
-    // 设置按钮位置
-    settingPosition: {
-      type: String
-    },
-
     // 设置按钮是否显示，必须开启拖动模式
-    settingIsShow: {
+    settingBtn: {
       type: Boolean,
       default: true
+    },
+
+    // 设置按钮位置
+    settingPosition: {
+      type: String,
+      default: 'left-top'
     },
 
     // 配置不能拖动的属性，通过CSS选择器的方式配置
@@ -83,12 +89,6 @@ export default {
     }
 
   },
-  data() {
-    return {
-      // 是否显示表格,主要功能是拖动列后通过隐藏再显示的方式实现刷新表格的功能
-      showTable: true
-    };
-  },
   computed: {
 
     /**
@@ -109,6 +109,14 @@ export default {
         });
         this.defaultColumnsChange(this.columns);
       }
+    },
+
+    /**
+     * 设置按钮类属性计算
+     * @returns {string}
+     */
+    settingPositionClass() {
+      return 'setting__content is-fixed ' + this.settingPosition;
     }
 
   },
@@ -116,8 +124,8 @@ export default {
   methods: {
 
     /**
-    * 初始化拖动功能
-    */
+     * 初始化拖动功能
+     */
     initSortable() {
       // 需要支持拖动效果的列表容器，在这里我们设置为el-table组件的tbody，
       // 注意：最前面的一段为前面el-table的class: draggable-table，主要为了防止如果页面有多个table，多个table同时实现拖拽效果
@@ -142,7 +150,7 @@ export default {
     sortableOnEnd(e) {
       // 得到当前表格列移动的索引。
       // 这是表格列的索引，不一定是动态表格的索引，因为表格选择列、序号列不在动态表格中，如果直接使用表格索引，索引会不一致。
-      let { newIndex, oldIndex } = e;
+      let {newIndex, oldIndex} = e;
       // 通过虚拟dom获取表格列数
       let tableColumns = this.$refs.draggableTable.columns;
       // 当用户拖动到会改变顺序时才触发
@@ -193,7 +201,7 @@ export default {
       if (typeof this.handleColumnsChange === 'function') {
         this.handleColumnsChange(columns);
       } else {
-        // 否则使用默认的实现
+        // TODO 否则使用默认的实现
         console.log(columns);
       }
     },
