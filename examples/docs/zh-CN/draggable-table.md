@@ -95,11 +95,13 @@
 | 参数      | 说明     | 类型      | 可选值        | 默认值 |
 |---------- |--------|---------|------------|--|
 | draggable | 是否启用拖动 | boolean | true/false | false |
+| table-ref | 真实表格的ref | string | -- | draggableTable |
 | setting-btn | 设置按钮是否显示，不开启拖动模式无法显示 | boolean | true/false | true |
 | setting-position | 设置按钮位置 | string | left-top/right-top | left-top |
-| filter-draggable-selector | 过滤不能拖动的列 | string | 类选择器 | 类选择器 |
+| filter-draggable-selector | 过滤不能拖动的列 | string | 类选择器 | .el-table-column--selection,.el-table-column--index,.el-table__expand-column |
 | columns | 用于显示的动态表格列 | array | -- | -- |
 | all-columns | 可选的所有表格列，也就是设置按钮中可选的列 | array | -- | -- |
+| popover-height | 设置按钮弹出层高度 | string | -- | 30vh |
 
 ### Table Events
 | 事件名                   | 说明 | 参数 |

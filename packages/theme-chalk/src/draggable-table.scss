@@ -1,42 +1,50 @@
 /* 表格设置按钮样式 */
 .setting {
-    position: relative;
-    vertical-align: middle;
+  position: relative;
+  vertical-align: middle;
 
-    &__content {
-        border-radius: 10px;
-        color: #909399;
-        display: inline-block;
-        font-size: 20px;
-        height: 24px;
-        line-height: 24px;
-        padding: 0 10px;
-        text-align: center;
-        white-space: nowrap;
-        border: 1px solid #EBEEF5;
-        cursor: pointer;
+  &__content {
+    border-radius: 5px;
+    color: #909399;
+    display: inline-block;
+    font-size: 20px;
+    padding: 1px 10px;
+    text-align: center;
+    white-space: nowrap;
+    border: 1px solid #EBEEF5;
+    cursor: pointer;
 
-        &.is-fixed {
-            position: absolute;
-            transform: translateY(-100%);
+    &.is-fixed {
+      position: absolute;
+      transform: translateY(-100%);
 
-            &.left-top {
-                top: -5px;
-                left: 10px;
-            }
+      &.left-top {
+        top: -5px;
+        left: 10px;
+      }
 
-            &.right-top {
-                top: -5px;
-                right: 10px;
-            }
-
-        }
+      &.right-top {
+        top: -5px;
+        right: 10px;
+      }
 
     }
 
-    &__checkbox .el-checkbox {
-        display: block;
-        margin-bottom: 5px;
-    }
+  }
 
+  &__checkbox .el-checkbox {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+}
+
+.checkbox-empty {
+  margin: 10px;
+  text-align: center;
+  color: #909399;
+}
+
+.checkbox-scrollbar .el-scrollbar__wrap {
+  overflow-x: hidden;
 }

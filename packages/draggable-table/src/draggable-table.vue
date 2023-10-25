@@ -1,14 +1,18 @@
 <template>
   <div class="setting">
-    <el-table ref="draggableTable" :class="draggable ? 'el-draggable-table' : ''" v-bind="$attrs"
-              @header-dragend="defaultColumnWidthChange" v-if="showTable">
+    <el-table :ref="tableRef" :class="draggable ? 'draggable-table' : ''" v-bind="$attrs" v-on="$listeners"
+      @header-dragend="defaultColumnWidthChange" v-if="showTable">
       <slot></slot>
     </el-table>
     <el-popover width="150" trigger="click">
       <div class="setting__checkbox">
-        <el-checkbox-group v-model="selColumnIds">
-          <el-checkbox v-for="item in allColumns" :label="item.id" :key="item.id">{{ item.label }}</el-checkbox>
-        </el-checkbox-group>
+        <el-scrollbar v-if="allColumns && allColumns.length > 0" 
+          :style="'height: ' + popoverHeight" class="checkbox-scrollbar">
+          <el-checkbox-group v-model="selColumnProps">
+            <el-checkbox v-for="item in allColumns" :label="item.prop" :key="item.prop">{{ item.label }}</el-checkbox>
+          </el-checkbox-group>
+        </el-scrollbar>
+        <div v-else class="checkbox-empty">暂无可选的动态列</div>
       </div>
       <div v-if="draggable && settingBtn" slot="reference" :class="settingPositionClass">
         <em class="el-icon-setting"></em>
@@ -22,6 +26,7 @@ import ElTable from 'element-ui/packages/table';
 import ElPopover from 'element-ui/packages/popover';
 import ElCheckbox from 'element-ui/packages/checkbox';
 import ElCheckboxGroup from 'element-ui/packages/checkbox-group';
+import Scrollbar from 'element-ui/packages/scrollbar';
 import Sortable from 'sortablejs';
 
 export default {
@@ -30,7 +35,8 @@ export default {
     ElTable,
     ElPopover,
     ElCheckbox,
-    ElCheckboxGroup
+    ElCheckboxGroup,
+    Scrollbar
   },
   data() {
     return {
@@ -44,6 +50,12 @@ export default {
     draggable: {
       type: Boolean,
       default: false
+    },
+
+    // 内部ElTable组件的ref
+    tableRef: {
+      type: String,
+      default: 'draggableTable'
     },
 
     // 设置按钮是否显示，必须开启拖动模式
@@ -76,6 +88,12 @@ export default {
       default: []
     },
 
+    // 设置按钮弹出层高度
+    popoverHeight: {
+      type: String,
+      default: '30vh'
+    },
+
     // 处理表格列变更
     handleColumnsChange: {
       type: Function,
@@ -95,14 +113,14 @@ export default {
      * 计算选中的表格列
      * @returns {*[]}
      */
-    selColumnIds: {
+    selColumnProps: {
       get() {
-        return this.columns.map(item => item.id);
+        return this.columns.map(item => item.prop);
       },
-      set(columnIds) {
+      set(columnProps) {
         this.columns.splice(0, this.columns.length);
-        columnIds.forEach(columnId => {
-          let index = this.allColumns.findIndex(allColumn => columnId === allColumn.id);
+        columnProps.forEach(columnProp => {
+          let index = this.allColumns.findIndex(allColumn => columnProp === allColumn.prop);
           if (index > -1) {
             this.columns.push(this.allColumns[index]);
           }
@@ -120,7 +138,9 @@ export default {
     }
 
   },
-
+  mounted() {
+    this.initSortable();
+  },
   methods: {
 
     /**
@@ -150,9 +170,9 @@ export default {
     sortableOnEnd(e) {
       // 得到当前表格列移动的索引。
       // 这是表格列的索引，不一定是动态表格的索引，因为表格选择列、序号列不在动态表格中，如果直接使用表格索引，索引会不一致。
-      let {newIndex, oldIndex} = e;
+      let { newIndex, oldIndex } = e;
       // 通过虚拟dom获取表格列数
-      let tableColumns = this.$refs.draggableTable.columns;
+      let tableColumns = this.$refs[this.tableRef].columns;
       // 当用户拖动到会改变顺序时才触发
       if (newIndex !== oldIndex) {
         // 获取表格列的属性名称
@@ -200,9 +220,6 @@ export default {
       // 如果传递了函数，那么使用用户自定义的函数
       if (typeof this.handleColumnsChange === 'function') {
         this.handleColumnsChange(columns);
-      } else {
-        // TODO 否则使用默认的实现
-        console.log(columns);
       }
     },
 
@@ -221,7 +238,7 @@ export default {
         // 否则使用默认的实现
         let columnKey = column.columnKey;
         if (columnKey) {
-          let index = this.columns.findIndex(item => item.id === columnKey);
+          let index = this.columns.findIndex(item => item.prop === columnKey);
           this.columns[index].width = String(newWidth);
           // 表格列宽度发生变化，触发变更
           this.defaultColumnsChange(this.columns);
