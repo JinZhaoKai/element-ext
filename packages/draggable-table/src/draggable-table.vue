@@ -6,8 +6,8 @@
     </el-table>
     <el-popover width="150" trigger="click">
       <div class="setting__checkbox">
-        <el-scrollbar v-if="allColumns && allColumns.length > 0" 
-          :style="'height: ' + popoverHeight" class="checkbox-scrollbar">
+        <el-scrollbar v-if="allColumns && allColumns.length > 0" :style="'height: ' + popoverHeight"
+          class="checkbox-scrollbar">
           <el-checkbox-group v-model="selColumnProps">
             <el-checkbox v-for="item in allColumns" :label="item.prop" :key="item.prop">{{ item.label }}</el-checkbox>
           </el-checkbox-group>
@@ -138,6 +138,25 @@ export default {
     }
 
   },
+  watch: {
+
+    /**
+     * 当表格列发生变化时，刷新表格
+     * @param {*} nV 新的列集合
+     * @param {*} oV 旧的列集合
+     */
+    columns(nV, oV) {
+      this.showTable = false;
+      this.$nextTick(() => {
+        this.showTable = true;
+        // 重建拖拽dom
+        this.$nextTick(() => {
+          this.initSortable();
+        });
+      });
+    }
+
+  },
   mounted() {
     this.initSortable();
   },
@@ -178,19 +197,17 @@ export default {
         // 获取表格列的属性名称
         let newProp = tableColumns[newIndex].property;
         let oldProp = tableColumns[oldIndex].property;
+        if (!newProp || !oldProp) {
+          throw Error('使用表格拖动功能的列必须配置prop属性, 并且需要保持表格列中的prop属性唯一');
+        }
         // 根据属性名称获取属性的索引，这才是动态列表的索引
         let newPropIndex = this.columns.findIndex(column => column.prop === newProp);
         let oldPropIndex = this.columns.findIndex(column => column.prop === oldProp);
         // 通过动态列表的索引驱动列表改变顺序
-        this.showTable = false;
         const targetRow = this.columns[oldPropIndex];
         this.columns.splice(oldPropIndex, 1);
         this.columns.splice(newPropIndex, 0, targetRow);
         this.$nextTick(() => {
-          this.showTable = true;
-          this.$nextTick(() => {
-            this.initSortable();
-          });
           // 表格列顺序发生变化，触发变更
           this.defaultColumnsChange(this.columns);
         });

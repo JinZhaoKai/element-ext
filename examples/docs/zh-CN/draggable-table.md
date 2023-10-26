@@ -16,7 +16,7 @@
       draggable
       :columns="myArray" 
       :allColumns="allColumns">
-      <el-table-column v-for="item in myArray" :key="item.id" :prop="item.prop" 
+      <el-table-column v-for="item in myArray" :key="item.id" :prop="item.prop" :column-key="item.prop"
                        :label="item.label" :width="item.width">
       </el-table-column>
     </draggable-table>
