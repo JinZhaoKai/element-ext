@@ -45,8 +45,13 @@
       v-if="showText && !textInside"
       :style="{fontSize: progressTextSize + 'px', color:textColor}"
     >
-      <template v-if="!status">{{content}}</template>
-      <i v-else :class="iconClass"></i>
+      <template v-if="$slots.content">
+        <slot name="content"></slot>
+      </template>
+      <template v-else>
+        <template v-if="!status">{{content}}</template>
+        <i v-else :class="iconClass"></i>
+      </template>
     </div>
   </div>
 </template>

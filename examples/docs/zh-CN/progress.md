@@ -178,3 +178,8 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
 | format  | 指定进度条文字内容 | function(percentage) | — | — |
 | define-back-color  | 指定进度条底色（支持 hex 格式） | string | — | — |
 | text-color  | 指定进度条字体颜色（支持 hex 格式） | string | — | — |
+
+### Progress Slots
+| name | 说明 |
+|------|--------|
+| content | 进度条内容 |
