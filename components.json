@@ -88,5 +88,6 @@
   "descriptions": "./packages/descriptions/index.js",
   "descriptions-item": "./packages/descriptions-item/index.js",
   "result": "./packages/result/index.js",
-  "draggable-table": "./packages/draggable-table/index.js"
+  "draggable-table": "./packages/draggable-table/index.js",
+  "lsxm-magnifier": "./packages/lsxm-magnifier/index.js"
 }

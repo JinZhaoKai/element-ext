@@ -320,6 +320,10 @@
             {
               "path": "/draggable-table",
               "title": "DraggableTable 拖动表格"
+            },
+            {
+              "path": "/lsxm-magnifier",
+              "title": "LsxmMagnifier 放大镜"
             }
           ]
         }
