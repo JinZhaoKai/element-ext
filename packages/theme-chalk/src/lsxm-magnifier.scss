@@ -1,4 +1,5 @@
 .lsxm-el-select {
+  display: inline-block;
 
   &-dropdown__item {
     font-size: 14px;
@@ -17,6 +18,10 @@
     box-sizing: border-box;
     font-weight: bold;
     background-color: white;
+  }
+
+  .el-dialog__body {
+    padding: unset !important;
   }
 
 }

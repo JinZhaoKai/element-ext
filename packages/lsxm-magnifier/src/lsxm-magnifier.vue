@@ -1,8 +1,8 @@
 <template>
   <div class="lsxm-el-select">
     <el-select v-model="magnifierValue" v-bind="$attrs" v-on="$listeners"
-               filterable remote reserve-keyword :remote-method="lsxmRemoteMethod"
-               :loading="loading">
+               filterable remote reserve-keyword default-first-option
+               :remote-method="lsxmRemoteMethod" :loading="selectLoading">
       <div class="lsxm-el-select-dropdown__item">
         <el-row type="flex" justify="space-between">
           <el-col v-for="tableColumn in tableColumnProp" :key="tableColumn.label">
@@ -10,7 +10,7 @@
           </el-col>
         </el-row>
       </div>
-      <el-option v-for="item in tableData" :key="item[valueKey]" :label="item[labelKey]" :value="item[valueKey]">
+      <el-option v-for="item in options" :key="item[lsxmValueKey]" :label="item[labelKey]" :value="item[lsxmValueKey]">
         <el-row type="flex" justify="space-between">
           <el-col v-for="tableColumn in tableColumnProp" :key="tableColumn.value">
             {{ item[tableColumn.value] }}
@@ -20,21 +20,46 @@
       <i slot="suffix" class="el-select__caret el-input__icon el-icon-search is-reverse"
          @click.stop="dialogVisible = true"></i>
     </el-select>
+
+    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :width="dialogWidth"
+               :close-on-click-modal="false">
+      <keep-alive>
+        <component ref="magnifier" v-bind:is="'ElLsxmMagnifierDefaultPage'" :table-data="options"
+                   :sel-value="magnifierValue" :lsxm-value-key="lsxmValueKey" :options-total="total"
+                   :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
+                   :enable-page="enablePage" :multiple="$attrs.multiple"
+                   :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
+                   @set-options="handleSetOptions" @lsxm-confirm="handleLsxmConfirm"></component>
+      </keep-alive>
+      <div slot="footer">
+        <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="onConfirm">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import ElSelect from 'element-ui/packages/select';
+import ElLsxmMagnifierDefaultPage from './lsxm-magnifier-default-page';
+
+import { parsePageTotal } from './utils';
 
 export default {
   name: 'ElLsxmMagnifier',
 
   components: {
-    ElSelect
+    ElSelect,
+    ElLsxmMagnifierDefaultPage
   },
 
   props: {
     value: {
+      required: true
+    },
+    // 输入框中返回的属性名
+    lsxmValueKey: {
+      type: String,
       required: true
     },
     // 对话框标题
@@ -73,40 +98,34 @@ export default {
     },
     // 表格是否开启分页
     enablePage: Boolean,
+    // 下拉框加载状态
+    selectLoading: Boolean,
     // 表格远程查询函数
-    tableRemoteMethod: Function,
-    // 表格加载状态
-    tableLoading: Boolean
+    tableRemoteMethod: Function
   },
   data() {
     return {
       magnifierValue: this.value,
       dialogVisible: false,
       searchParams: {},
-      tableData: [],
-      loading: true,
-      // 已选行
-      selectedRow: null,
-      // 作为 value 唯一标识的键名，绑定值为对象类型时必填
-      valueKey: 'value',
-
-      // 分页参数
-      pagination: {
-        pageSize: 20,
-        currentPage: 1,
-        totalCount: 0
-      }
+      options: [],
+      total: 0
     };
   },
-  computed: {},
+  watch: {
+    value(nv, ov) {
+      this.magnifierValue = this.value;
+    }
+  },
   created() {
     this.initSearchParams();
   },
   mounted() {
-    if (this.$attrs['value-key']) {
-      this.valueKey = this.$attrs['value-key'];
+    if (this.value && this.value.length > 0) {
+      this.lsxmRemoteMethod(this.value);
+    } else {
+      this.lsxmRemoteMethod();
     }
-    this.lsxmRemoteMethod();
   },
   methods: {
     /**
@@ -120,54 +139,13 @@ export default {
       this.searchParams = obj;
     },
 
-    tableRowClick(row) {
-      if (this.selectedRow && this.selectedRow === row) {
-        this.selectedRow = null;
-        this.$refs.searchTable.setCurrentRow();
-      } else {
-        this.selectedRow = row;
-        this.$refs.searchTable.setCurrentRow(row);
-      }
-    },
-    tableRowDbClick(row) {
-      this.tableRowClick(row);
-      this.onConfirm();
-    },
-
-    loadTableData() {
-      let params;
-      if (this.enablePage) {
-        params = {
-          start: this.pagination.pageSize * (this.pagination.currentPage - 1),
-          limit: this.pagination.pageSize,
-          ...this.searchParams
-        };
-      } else {
-        params = this.searchParams;
-      }
-      this.tableRemoteMethod && this.tableRemoteMethod(params, (list, pageInfo) => {
-        if (this.enablePage) {
-          this.pagination.totalCount = pageInfo.total;
-        }
-        this.tableData = list;
-      });
-    },
-
-    startSearch() {
-      this.pagination.currentPage = 1;
-      this.loadTableData();
-    },
-    clearSearchParams() {
-      this.searchParams = {};
-    },
-
     lsxmRemoteMethod(query) {
       const remoteMethod = this.$attrs['remote-method'];
       if (remoteMethod && typeof remoteMethod === 'function') {
-        remoteMethod(query, array => {
-          this.loading = false;
+        remoteMethod(query, (array, pageInfo) => {
           if (Array.isArray(array)) {
-            this.tableData = array;
+            this.options = array;
+            this.total = parsePageTotal(pageInfo);
           } else {
             console.error('[Element Error][Autocomplete]autocomplete suggestions must be an array');
           }
@@ -181,27 +159,34 @@ export default {
       }
     },
 
-    handleCurrentPageChange(pageNo) {
-      this.pagination.currentPage = pageNo;
-      this.loadTableData();
-    },
-    handleSizeChange(pageSize) {
-      this.pagination.pageSize = pageSize;
-      this.loadTableData();
+    handleSetOptions(array) {
+      this.options = array;
     },
 
-    onConfirm() {
-      if (this.selectedRow) {
-        this.$emit('input', this.selectedRow[this.valueKey]);
+    handleLsxmConfirm(tabSelVal) {
+      if (tabSelVal) {
+        let val = '';
+        if (tabSelVal instanceof Array) {
+          val = tabSelVal.map(item => item[this.lsxmValueKey]);
+        } else {
+          val = tabSelVal[this.lsxmValueKey];
+        }
+        this.magnifierValue = val;
+        this.$emit('input', val);
+        this.$emit('change', val);
         this.dialogVisible = false;
 
         if (this.$listeners && this.$listeners.select) {
           const {select} = this.$listeners;
           if (typeof select === 'function') {
-            select(this.selectedRow);
+            select(tabSelVal);
           }
         }
       }
+    },
+
+    onConfirm() {
+      this.$refs.magnifier.triggerLsxmConfirm();
     }
 
   }
