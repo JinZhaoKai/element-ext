@@ -1,8 +1,8 @@
-import ElLsxmMagnifier from './src/lsxm-magnifier';
+import LsxmMagnifier from './src/lsxm-magnifier';
 
 /* istanbul ignore next */
-ElLsxmMagnifier.install = function(Vue) {
-  Vue.component(ElLsxmMagnifier.name, ElLsxmMagnifier);
+LsxmMagnifier.install = function(Vue) {
+  Vue.component(LsxmMagnifier.name, LsxmMagnifier);
 };
 
-export default ElLsxmMagnifier;
+export default LsxmMagnifier;

@@ -1,5 +1,5 @@
 <template>
-  <div class="lsxm-magnifier-default-page">
+  <div class="el-lsxm-magnifier-default-page">
     <el-row :gutter="10" v-if="searchParamProp && searchParamProp.length > 0">
       <el-col :span="18">
         <el-form size="mini" inline style="margin-left: 10px">

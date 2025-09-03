@@ -333,7 +333,7 @@
 | lsxm-value-key | 必填项，作为放大镜唯一标识的键名，如果放大镜返回的是对象类型，还需设置原生的value-key属性 | string | — | — |
 | label-key | 必填项，选中状态的值 | string | — | value |
 | dialog-title | 对话框标题 | string | — | 放大镜 |
-| dialog-width | 对话框宽度 | string | — | 800px |
+| dialog-width | 对话框宽度 | string | — | 50% |
 | search-param-prop | 必填项，放大镜对话框表格的搜索参数配置 | string | — | [] |
 | table-column-prop | 必填项，放大镜对话框表格的列表参数配置 | string | — | [] |
 | table-height | 放大镜对话框 Table 的高度，默认为自动高度。如果 height 为 number 类型，单位 px；如果 height 为 string 类型，则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式 | string/number | — | — |

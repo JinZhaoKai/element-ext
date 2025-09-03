@@ -1,4 +1,4 @@
-.lsxm-el-select {
+.el-lsxm-magnifier {
   display: inline-block;
 
   &-dropdown__item {
@@ -22,6 +22,21 @@
 
   .el-dialog__body {
     padding: unset !important;
+  }
+
+  &-default-page {
+    padding: 10px;
+
+    .lsxm-el-pagination-content {
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    .lsxm-el-table-content {
+      border-top: 1px #EBEEF5 solid;
+      border-left: 1px #EBEEF5 solid;
+      border-right: 1px #EBEEF5 solid;
+    }
   }
 
 }

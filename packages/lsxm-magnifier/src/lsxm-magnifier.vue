@@ -1,9 +1,9 @@
 <template>
-  <div class="lsxm-el-select">
+  <div class="el-lsxm-magnifier">
     <el-select v-model="magnifierValue" v-bind="$attrs" v-on="$listeners"
                filterable remote reserve-keyword default-first-option
                :remote-method="lsxmRemoteMethod" :loading="selectLoading">
-      <div class="lsxm-el-select-dropdown__item">
+      <div class="el-lsxm-magnifier-dropdown__item">
         <el-row type="flex" justify="space-between">
           <el-col v-for="tableColumn in tableColumnProp" :key="tableColumn.label">
             {{ tableColumn.label }}
@@ -70,7 +70,7 @@ export default {
     // 对话框宽度
     dialogWidth: {
       type: String,
-      default: '800px'
+      default: '50%'
     },
     // 检索参数配置
     searchParamProp: {
