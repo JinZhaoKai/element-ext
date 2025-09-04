@@ -2,7 +2,8 @@
   <div class="el-lsxm-magnifier">
     <el-select v-model="magnifierValue" v-bind="$attrs" v-on="$listeners"
                filterable remote reserve-keyword default-first-option
-               :remote-method="lsxmRemoteMethod" :loading="selectLoading">
+               :remote-method="lsxmRemoteMethod" :loading="selectLoading"
+               :style="{width: '100%'}">
       <div class="el-lsxm-magnifier-dropdown__item">
         <el-row type="flex" justify="space-between">
           <el-col v-for="tableColumn in tableColumnProp" :key="tableColumn.label">

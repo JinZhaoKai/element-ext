@@ -1,18 +1,14 @@
 <template>
-  <div class="el-lsxm-magnifier-default-page">
-    <el-row :gutter="10" v-if="searchParamProp && searchParamProp.length > 0">
-      <el-col :span="18">
-        <el-form size="mini" inline style="margin-left: 10px">
-          <el-form-item v-for="item in searchParamProp" :key="item.value" :label="item.label">
-            <el-input v-model="searchParams[item.value]" @blur="startSearch"></el-input>
-          </el-form-item>
-        </el-form>
-      </el-col>
-      <el-col :span="6" style="text-align: right">
+  <div class="el-lsxm-magnifier-dialog-page">
+    <el-form size="mini" inline v-if="searchParamProp && searchParamProp.length > 0">
+      <el-form-item v-for="item in searchParamProp" :key="item.value" :label="item.label">
+        <el-input v-model="searchParams[item.value]" @blur="startSearch"></el-input>
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" size="mini" @click="startSearch">查询</el-button>
         <el-button size="mini" @click="clearSearchParams">重置</el-button>
-      </el-col>
-    </el-row>
+      </el-form-item>
+    </el-form>
     <div class="lsxm-el-table-content">
       <el-table ref="searchTable" v-loading="loading" :data="tableData" style="width: 100%" :height="tableHeight"
                 highlight-current-row @selection-change="tableSelectionChange" @row-click="tableRowClick"

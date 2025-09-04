@@ -24,8 +24,12 @@
     padding: unset !important;
   }
 
-  &-default-page {
+  &-dialog-page {
     padding: 10px;
+
+    .el-form {
+      margin-left: 10px;
+    }
 
     .lsxm-el-pagination-content {
       margin-top: 10px;
