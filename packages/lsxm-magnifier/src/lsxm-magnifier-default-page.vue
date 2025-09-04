@@ -35,17 +35,6 @@ export default {
   name: 'ElLsxmMagnifierDefaultPage',
 
   props: {
-    // 表格数据
-    tableData: {
-      type: Array,
-      default() {
-        return [];
-      }
-    },
-    // 已选中的内容
-    selValue: {
-      default: ''
-    },
     // 输入框中返回的属性名
     lsxmValueKey: {
       type: String,
@@ -74,17 +63,13 @@ export default {
     enablePage: Boolean,
     // 表格是否支持多选
     multiple: Boolean,
-    // 选项总数
-    optionsTotal: {
-      type: Number,
-      default: 0
-    },
     // 表格远程查询函数
     tableRemoteMethod: Function
   },
   data() {
     return {
       searchParams: {},
+      tableData: [],
       loading: false,
       // 已选行
       selectedRow: null,
@@ -94,38 +79,15 @@ export default {
       pagination: {
         pageSize: 10,
         currentPage: 1,
-        totalCount: this.optionsTotal
+        totalCount: 0
       }
     };
   },
-  watch: {
-    selValue: {
-      handler(nv, ov) {
-        if (nv) {
-          if (nv instanceof Array) {
-            const valList = this.tableData.filter(item => {
-              return nv.findIndex(nItem => item[this.lsxmValueKey] === nItem) > -1;
-            });
-            this.tableSelectionChange(valList);
-            this.$nextTick(() => {
-              valList.forEach(row => {
-                this.$refs.searchTable.toggleRowSelection(row, true);
-              });
-            });
-          } else {
-            const val = this.tableData.findIndex(item => item[this.lsxmValueKey] === nv);
-            this.$nextTick(() => {
-              this.tableRowClick(val);
-            });
-          }
-        }
-      },
-      deep: true,
-      immediate: true
-    }
-  },
   created() {
     this.initSearchParams();
+  },
+  mounted() {
+    this.loadTableData();
   },
   methods: {
     /**
@@ -185,7 +147,7 @@ export default {
           if (this.enablePage) {
             this.pagination.totalCount = parsePageTotal(pageInfo);
           }
-          this.$emit('set-options', list);
+          this.tableData = list;
           this.loading = false;
         });
       }

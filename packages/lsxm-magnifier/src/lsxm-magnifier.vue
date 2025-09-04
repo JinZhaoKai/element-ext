@@ -24,14 +24,11 @@
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :width="dialogWidth"
                :close-on-click-modal="false">
-      <keep-alive>
-        <component ref="magnifier" v-bind:is="'ElLsxmMagnifierDefaultPage'" :table-data="options"
-                   :sel-value="magnifierValue" :lsxm-value-key="lsxmValueKey" :options-total="total"
-                   :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
-                   :enable-page="enablePage" :multiple="$attrs.multiple"
-                   :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
-                   @set-options="handleSetOptions" @lsxm-confirm="handleLsxmConfirm"></component>
-      </keep-alive>
+      <component ref="magnifier" v-bind:is="customDialogComponent" :lsxm-value-key="lsxmValueKey"
+                 :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
+                 :enable-page="enablePage" :multiple="$attrs.multiple"
+                 :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
+                 @lsxm-confirm="handleLsxmConfirm"></component>
       <div slot="footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
         <el-button size="small" type="primary" @click="onConfirm">确 定</el-button>
@@ -98,9 +95,20 @@ export default {
       default: 'value'
     },
     // 表格是否开启分页
-    enablePage: Boolean,
+    enablePage: {
+      type: Boolean,
+      default: true
+    },
     // 下拉框加载状态
-    selectLoading: Boolean,
+    selectLoading: {
+      type: Boolean,
+      default: false
+    },
+    // 自定义dialog组件
+    customDialogComponent: {
+      type: String,
+      default: 'ElLsxmMagnifierDefaultPage'
+    },
     // 表格远程查询函数
     tableRemoteMethod: Function
   },
