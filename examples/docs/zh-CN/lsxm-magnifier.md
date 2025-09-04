@@ -4,16 +4,16 @@
 
 ### 基础用法
 
-展示放大镜，默认情况下放大镜就是一个支持远程搜索的select。
+展示放大镜，默认情况下放大镜就是一个支持远程搜索的select，点击输入框右侧放大镜图标将弹出支持更多查询条件和展示更多内容的对话框。
 
 :::demo `v-model`的值为当前被选中行键名为`lsxm-value-key`的值，此处取id作为`v-model`的值。`label-key`设置了选择后输入框中显示的内容。`table-column-prop`支持动态配置下拉框和表格中显示的列。`search-param-prop`支持动态配置表格的搜索参数。`remote-method`和`table-remote-method`分别是下拉框和表格的远程查询方法。
 ```html
 <template>
     <el-lsxm-magnifier v-model="value" lsxm-value-key="id" label-key="name"
                        :search-param-prop="magnifierOptions.searchParamProp"
-                       :table-column-prop="magnifierOptions.tableColumnProp" :enable-page="true"
-                       :select-loading="magnifierOptions.loading" table-height="400px" placeholder="请输入"
-                       :remote-method="handleQuerySearchAsync" :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
+                       :table-column-prop="magnifierOptions.tableColumnProp" :select-loading="magnifierOptions.loading"
+                       table-height="400px" placeholder="请输入" :remote-method="handleQuerySearchAsync"
+                       :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
 </template>
 <script>export default {
     data() {return {
@@ -73,7 +73,8 @@
                 this.magnifierOptions.loading = true;
                 setTimeout(() => {
                     this.magnifierOptions.loading = false;
-                    cb(this.list.slice(searchParams.start, searchParams.limit + searchParams.start), this.states.length)
+                    const arr = this.list.filter(item => item.name.toLowerCase().indexOf(searchParams.name.toLowerCase()) > -1);
+                    cb(arr.slice(searchParams.start, searchParams.limit + searchParams.start), arr.length)
                 }, 1000);
             } else {
                 this.magnifierOptions.loading = true;
