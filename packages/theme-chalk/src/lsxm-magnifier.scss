@@ -20,29 +20,6 @@
     background-color: white;
   }
 
-  .el-dialog__body {
-    padding: unset !important;
-  }
-
-  &-dialog-page {
-    padding: 20px 10px 0 10px;
-
-    .el-form {
-      margin-left: 10px;
-    }
-
-    .lsxm-el-pagination-content {
-      margin-top: 10px;
-      text-align: right;
-    }
-
-    .lsxm-el-table-content {
-      border-top: 1px #EBEEF5 solid;
-      border-left: 1px #EBEEF5 solid;
-      border-right: 1px #EBEEF5 solid;
-    }
-  }
-
 }
 
 .el-scrollbar__bar.is-vertical {

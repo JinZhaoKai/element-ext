@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="el-lsxm-magnifier-dialog">
     <el-dialog :visible.sync="value" :title="dialogTitle" :width="dialogWidth"
                :close-on-click-modal="false">
-      <component ref="magnifier" v-bind:is="customDialogComponent" :lsxm-value-key="lsxmValueKey"
+      <component ref="magnifier" v-bind:is="customDialogComponent"
                  :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                  :enable-page="enablePage" :multiple="$attrs.multiple"
                  :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
@@ -20,11 +20,6 @@ export default {
   name: 'ElLsxmMagnifierDialog',
   props: {
     value: {
-      required: true
-    },
-    // 输入框中返回的属性名
-    lsxmValueKey: {
-      type: String,
       required: true
     },
     // 对话框标题

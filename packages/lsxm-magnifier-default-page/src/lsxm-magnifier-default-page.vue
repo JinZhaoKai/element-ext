@@ -1,5 +1,5 @@
 <template>
-  <div class="el-lsxm-magnifier-dialog-page">
+  <div class="el-lsxm-magnifier-default-page">
     <el-form size="mini" inline v-if="searchParamProp && searchParamProp.length > 0">
       <el-form-item v-for="item in searchParamProp" :key="item.value" :label="item.label">
         <el-input v-model="searchParams[item.value]" @blur="startSearch"></el-input>
@@ -34,11 +34,6 @@ import {parsePageTotal} from '../../lsxm-magnifier/src/utils';
 export default {
   name: 'ElLsxmMagnifierDefaultPage',
   props: {
-    // 输入框中返回的属性名
-    lsxmValueKey: {
-      type: String,
-      required: true
-    },
     // 检索参数配置
     searchParamProp: {
       type: Array,
