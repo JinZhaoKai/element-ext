@@ -22,35 +22,19 @@
          @click.stop="dialogVisible = true"></i>
     </el-select>
 
-    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :width="dialogWidth"
-               :close-on-click-modal="false">
-      <component ref="magnifier" v-bind:is="customDialogComponent" :lsxm-value-key="lsxmValueKey"
-                 :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
-                 :enable-page="enablePage" :multiple="$attrs.multiple"
-                 :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
-                 @lsxm-confirm="handleLsxmConfirm"></component>
-      <div slot="footer">
-        <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="onConfirm">确 定</el-button>
-      </div>
-    </el-dialog>
+    <el-lsxm-magnifier-dialog v-model="dialogVisible" :search-param-prop="searchParamProp"
+                              :table-column-prop="tableColumnProp" :lsxm-value-key="lsxmValueKey"
+                              :enable-page="enablePage" :multiple="$attrs.multiple"
+                              :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
+                              :lsxm-confirm="handleLsxmConfirm"></el-lsxm-magnifier-dialog>
   </div>
 </template>
 
 <script>
-import ElSelect from 'element-ui/packages/select';
-import ElLsxmMagnifierDefaultPage from './lsxm-magnifier-default-page';
-
-import { parsePageTotal } from './utils';
+import {parsePageTotal} from './utils';
 
 export default {
   name: 'ElLsxmMagnifier',
-
-  components: {
-    ElSelect,
-    ElLsxmMagnifierDefaultPage
-  },
-
   props: {
     value: {
       required: true
@@ -188,10 +172,6 @@ export default {
           }
         }
       }
-    },
-
-    onConfirm() {
-      this.$refs.magnifier.triggerLsxmConfirm();
     }
 
   }

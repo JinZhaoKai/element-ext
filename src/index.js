@@ -91,6 +91,7 @@ import DescriptionsItem from '../packages/descriptions-item/index.js';
 import Result from '../packages/result/index.js';
 import DraggableTable from '../packages/draggable-table/index.js';
 import LsxmMagnifier from '../packages/lsxm-magnifier/index.js';
+import LsxmMagnifierDialog from '../packages/lsxm-magnifier-dialog/index.js';
 import locale from 'element-ui/src/locale';
 import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -181,6 +182,7 @@ const components = [
   Result,
   DraggableTable,
   LsxmMagnifier,
+  LsxmMagnifierDialog,
   CollapseTransition
 ];
 
@@ -311,5 +313,6 @@ export default {
   DescriptionsItem,
   Result,
   DraggableTable,
-  LsxmMagnifier
+  LsxmMagnifier,
+  LsxmMagnifierDialog
 };

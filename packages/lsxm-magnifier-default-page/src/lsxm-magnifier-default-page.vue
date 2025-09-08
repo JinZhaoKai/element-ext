@@ -29,11 +29,10 @@
 </template>
 
 <script>
-import {parsePageTotal} from './utils';
+import {parsePageTotal} from '../../lsxm-magnifier/src/utils';
 
 export default {
   name: 'ElLsxmMagnifierDefaultPage',
-
   props: {
     // 输入框中返回的属性名
     lsxmValueKey: {
