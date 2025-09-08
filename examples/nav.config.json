@@ -324,6 +324,10 @@
             {
               "path": "/lsxm-magnifier",
               "title": "LsxmMagnifier 放大镜"
+            },
+            {
+              "path": "/lsxm-magnifier-dialog",
+              "title": "LsxmMagnifierDialog 放大镜对话框"
             }
           ]
         }
