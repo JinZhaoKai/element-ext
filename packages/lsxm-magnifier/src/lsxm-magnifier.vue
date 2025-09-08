@@ -130,11 +130,7 @@ export default {
     this.initSearchParams();
   },
   mounted() {
-    if (this.value && this.value.length > 0) {
-      this.lsxmRemoteMethod(this.value);
-    } else {
-      this.lsxmRemoteMethod();
-    }
+    this.lsxmRemoteMethod();
   },
   methods: {
     /**
