@@ -51,20 +51,10 @@ export default {
       type: String,
       default: '300px'
     },
-    // 输入框中显示的键名
-    labelKey: {
-      type: String,
-      default: 'value'
-    },
     // 表格是否开启分页
     enablePage: {
       type: Boolean,
       default: true
-    },
-    // 下拉框加载状态
-    selectLoading: {
-      type: Boolean,
-      default: false
     },
     // 自定义dialog组件
     customDialogComponent: {
@@ -84,7 +74,10 @@ export default {
       this.$emit('input', false);
     },
     onConfirm() {
-      this.$refs.magnifier.triggerLsxmConfirm();
+      const magnifier = this.$refs.magnifier;
+      if (magnifier && magnifier.triggerLsxmConfirm && typeof (magnifier.triggerLsxmConfirm) === 'function') {
+        magnifier.triggerLsxmConfirm();
+      }
     }
   }
 };
