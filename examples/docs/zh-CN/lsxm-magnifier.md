@@ -339,8 +339,9 @@
 | table-column-prop | 必填项，放大镜对话框表格的列表参数配置 | string | — | [] |
 | table-height | 放大镜对话框 Table 的高度，默认为自动高度。如果 height 为 number 类型，单位 px；如果 height 为 string 类型，则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式 | string/number | — | — |
 | enable-page | 是否开启分页，开启后传递到接口的参数会携带start和limit分页参数 | boolean | — | true |
+| custom-dialog-component | 自定义组件名称 | string | — | ElLsxmMagnifierDefaultPage |
 | select-loading | 是否正在从远程获取数据 | boolean | — | false |
-| table-remote-method | 放大镜对话框 Table 的远程搜索方法 | function | — | — |
+| table-remote-method | 放大镜对话框 Table 的远程搜索方法，第一个参数是查询参数；第二个参数是回调函数，用来回传接口查询到的数据。cb回调函数参数列表Function(list, total) | function | — | Function(searchParams, cb) |
 
 ### Extends Select Events
 | 事件名称 | 说明 | 回调参数 |
