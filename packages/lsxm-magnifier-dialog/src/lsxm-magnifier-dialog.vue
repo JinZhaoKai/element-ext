@@ -2,7 +2,7 @@
   <div class="el-lsxm-magnifier-dialog">
     <el-dialog :visible.sync="value" :title="dialogTitle" :width="dialogWidth"
                :close-on-click-modal="false">
-      <component ref="magnifier" v-bind:is="customDialogComponent"
+      <component ref="magnifier" v-bind:is="customPageComponent"
                  :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                  :enable-page="enablePage" :multiple="$attrs.multiple"
                  :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
@@ -56,8 +56,8 @@ export default {
       type: Boolean,
       default: true
     },
-    // 自定义dialog组件
-    customDialogComponent: {
+    // 自定义dialog page组件
+    customPageComponent: {
       type: String,
       default: 'ElLsxmMagnifierDefaultPage'
     },

@@ -22,7 +22,7 @@
          @click.stop="dialogVisible = true"></i>
     </el-select>
 
-    <el-lsxm-magnifier-dialog v-model="dialogVisible" :custom-dialog-component="customDialogComponent"
+    <el-lsxm-magnifier-dialog v-model="dialogVisible" :custom-page-component="customPageComponent"
                               :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                               :lsxm-value-key="lsxmValueKey" :enable-page="enablePage" :multiple="$attrs.multiple"
                               :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
@@ -88,8 +88,8 @@ export default {
       type: Boolean,
       default: false
     },
-    // 自定义dialog组件
-    customDialogComponent: {
+    // 自定义dialog page组件
+    customPageComponent: {
       type: String,
       default: 'ElLsxmMagnifierDefaultPage'
     },
