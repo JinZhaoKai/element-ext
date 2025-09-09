@@ -93,7 +93,7 @@
 
 ### 自定义页面
 
-有时默认的动态页面无法满足需求或者希望定制页面样式，对话框组件同样支持自定义其中的页面，只需要按照`LsxmMagnifierPage 放大镜页面`的指引开发组件，然后引入并且配置到对话框组件的`custom-dialog-component`属性即可展示自定义组件效果。
+有时默认的动态页面无法满足需求或者希望定制页面样式，对话框组件同样支持自定义其中的页面，只需要按照`LsxmMagnifierPage 放大镜页面`的指引开发组件，然后引入并且配置到对话框组件的`custom-page-component`属性即可展示自定义组件效果。
 
 :::demo 需要设置`v-model`属性，它接收`Boolean`，当为`true`时显示 Dialog。通过`search-param-prop`和`table-column-prop`属性即可动态渲染出一个简单的页面。配置`table-remote-method`函数接收页面查询参数开启远程搜索功能（接口返回的值内容通过`table-remote-method`第二个回调函数参数传递到组件中，第一个参数是查询参数）。
 
@@ -101,7 +101,7 @@
 <template>
     <el-button type="text" @click="dialogVisible = true">点击打开自定义 Lsxm Magnifier Dialog</el-button>
 
-    <el-lsxm-magnifier-dialog v-model="dialogVisible" :custom-dialog-component="'el-empty'" :lsxm-confirm="handleLsxmConfirm"></el-lsxm-magnifier-dialog>
+    <el-lsxm-magnifier-dialog v-model="dialogVisible" :custom-page-component="'el-empty'" :lsxm-confirm="handleLsxmConfirm"></el-lsxm-magnifier-dialog>
 </template>
 
 <script>
@@ -132,6 +132,6 @@
 | table-column-prop | 必填项，放大镜对话框表格的列表参数配置 | string | — | [] |
 | table-height | 放大镜对话框 Table 的高度，默认为自动高度。如果 height 为 number 类型，单位 px；如果 height 为 string 类型，则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式 | string/number | — | — |
 | enable-page | 是否开启分页，开启后传递到接口的参数会携带start和limit分页参数 | boolean | — | true |
-| custom-dialog-component | 自定义组件名称 | string | — | ElLsxmMagnifierDefaultPage |
+| custom-page-component | 自定义对话框组件名称 | string | — | ElLsxmMagnifierDefaultPage |
 | table-remote-method | 放大镜对话框 Table 的远程搜索方法，第一个参数是查询参数；第二个参数是回调函数，用来回传接口查询到的数据。cb回调函数参数列表Function(list, total) | function | — | Function(searchParams, cb) |
 | lsxm-confirm | 用于返回选中值 | function | — | — |
