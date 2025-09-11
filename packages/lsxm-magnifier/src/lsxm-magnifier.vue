@@ -142,16 +142,6 @@ export default {
       }
     },
 
-    visibleChange(res) {
-      if (res) {
-        this.lsxmRemoteMethod();
-      }
-    },
-
-    handleSetOptions(array) {
-      this.options = array;
-    },
-
     handleLsxmConfirm(tabSelVal) {
       if (tabSelVal) {
         let val = '';

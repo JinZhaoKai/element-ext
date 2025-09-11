@@ -1,7 +1,7 @@
 <template>
   <div class="el-lsxm-magnifier-dialog">
-    <el-dialog :visible.sync="value" :title="dialogTitle" :width="dialogWidth"
-               :close-on-click-modal="false">
+    <el-dialog :visible.sync="dialogValue" :title="dialogTitle" :width="dialogWidth"
+               :close-on-click-modal="false" @close="onCancel">
       <component ref="magnifier" v-bind:is="customPageComponent"
                  :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                  :enable-page="enablePage" :multiple="$attrs.multiple"
@@ -67,6 +67,16 @@ export default {
     lsxmConfirm: {
       type: Function,
       required: true
+    }
+  },
+  data() {
+    return {
+      dialogValue: this.value
+    };
+  },
+  watch: {
+    value(nv, ov) {
+      this.dialogValue = this.value;
     }
   },
   methods: {
