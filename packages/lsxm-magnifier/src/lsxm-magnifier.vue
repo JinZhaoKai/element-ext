@@ -22,7 +22,8 @@
          @click.stop="dialogVisible = true"></i>
     </el-select>
 
-    <el-lsxm-magnifier-dialog v-model="dialogVisible" :custom-page-component="customPageComponent"
+    <el-lsxm-magnifier-dialog v-model="dialogVisible" :dialog-title="dialogTitle" :dialog-width="dialogWidth"
+                              :custom-page-component="customPageComponent"
                               :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                               :lsxm-value-key="lsxmValueKey" :enable-page="enablePage" :multiple="$attrs.multiple"
                               :table-height="tableHeight" :table-remote-method="tableRemoteMethod"

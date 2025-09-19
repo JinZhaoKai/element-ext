@@ -1,7 +1,7 @@
 <template>
   <div class="el-lsxm-magnifier-dialog">
     <el-dialog :visible.sync="dialogValue" :title="dialogTitle" :width="dialogWidth"
-               :close-on-click-modal="false" @close="onCancel">
+               :close-on-click-modal="false" append-to-body @close="onCancel">
       <component ref="magnifier" v-bind:is="customPageComponent"
                  :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                  :enable-page="enablePage" :multiple="$attrs.multiple"
