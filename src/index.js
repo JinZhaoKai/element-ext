@@ -93,6 +93,7 @@ import DraggableTable from '../packages/draggable-table/index.js';
 import LsxmMagnifier from '../packages/lsxm-magnifier/index.js';
 import LsxmMagnifierDefaultPage from '../packages/lsxm-magnifier-default-page/index.js';
 import LsxmMagnifierDialog from '../packages/lsxm-magnifier-dialog/index.js';
+import LsxmTable from '../packages/lsxm-table/index.js';
 import locale from 'element-ui/src/locale';
 import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -185,6 +186,7 @@ const components = [
   LsxmMagnifier,
   LsxmMagnifierDefaultPage,
   LsxmMagnifierDialog,
+  LsxmTable,
   CollapseTransition
 ];
 
@@ -317,5 +319,6 @@ export default {
   DraggableTable,
   LsxmMagnifier,
   LsxmMagnifierDefaultPage,
-  LsxmMagnifierDialog
+  LsxmMagnifierDialog,
+  LsxmTable
 };

@@ -191,7 +191,7 @@ export default {
       // 这是表格列的索引，不一定是动态表格的索引，因为表格选择列、序号列不在动态表格中，如果直接使用表格索引，索引会不一致。
       let { newIndex, oldIndex } = e;
       // 通过虚拟dom获取表格列数
-      let tableColumns = this.$refs[this.tableRef].columns;
+      let tableColumns = this.getSourceTableRef().columns;
       // 当用户拖动到会改变顺序时才触发
       if (newIndex !== oldIndex) {
         // 获取表格列的属性名称
@@ -263,6 +263,9 @@ export default {
           console.error('请设置column-key属性,并保持唯一');
         }
       }
+    },
+    getSourceTableRef() {
+      return this.$refs[this.tableRef];
     }
 
   }

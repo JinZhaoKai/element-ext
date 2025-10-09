@@ -91,5 +91,6 @@
   "draggable-table": "./packages/draggable-table/index.js",
   "lsxm-magnifier": "./packages/lsxm-magnifier/index.js",
   "lsxm-magnifier-default-page": "./packages/lsxm-magnifier-default-page/index.js",
-  "lsxm-magnifier-dialog": "./packages/lsxm-magnifier-dialog/index.js"
+  "lsxm-magnifier-dialog": "./packages/lsxm-magnifier-dialog/index.js",
+  "lsxm-table": "./packages/lsxm-table/index.js"
 }

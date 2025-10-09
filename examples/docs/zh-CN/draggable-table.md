@@ -6,10 +6,10 @@
 
 表格列可以拖动的用法展示。
 
-:::demo 当`draggable-table`元素中注入`data`对象数组后，在`el-table-column`中用`prop`属性来对应对象中的键名即可填入数据，用`label`属性来定义表格的列名。可以使用`width`属性来定义列宽。通过`draggable`属性开启拖动功能，使用`columns`传入当前动态列，通过`all-columns`配置所有动态列。
+:::demo 当`el-lsxm-table`元素中注入`data`对象数组后，在`el-table-column`中用`prop`属性来对应对象中的键名即可填入数据，用`label`属性来定义表格的列名。可以使用`width`属性来定义列宽。通过`draggable`属性开启拖动功能，使用`columns`传入当前动态列，通过`all-columns`配置所有动态列。
 ```html
   <template>
-    <draggable-table
+    <el-lsxm-table
       :data="tableData"
       style="width: 100%;margin-top: 20px"
       border 
@@ -19,7 +19,7 @@
       <el-table-column v-for="item in myArray" :key="item.id" :prop="item.prop" :column-key="item.prop"
                        :label="item.label" :width="item.width">
       </el-table-column>
-    </draggable-table>
+    </el-lsxm-table>
   </template>
 
   <script>
@@ -108,3 +108,8 @@
 |-----------------------|--| ---- |
 | handle-columns-change | 表格列发生变化和列宽发生变化时都会触发 | columns |
 | header-column-width-change | 表格列宽发生变化时触发（基于原生的header-dragend实现） | newWidth, oldWidth, column, event |
+
+### Table Methods
+| 方法名 | 说明 | 参数 |
+| ---- | ---- | ---- |
+| getSourceTableRef | 当你要调用表格的toggleRowSelection等方法，需要使用getSourceTableRef获取源表格的Ref对象才能成功调用 | — |
