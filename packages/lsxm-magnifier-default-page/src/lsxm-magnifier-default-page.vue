@@ -119,6 +119,9 @@ export default {
     },
     tableRowDbClick(row) {
       if (!this.multiple) {
+        this.selectedRow = null;
+        this.$refs.searchTable.setCurrentRow();
+
         this.tableRowClick(row);
         this.triggerLsxmConfirm();
       }
