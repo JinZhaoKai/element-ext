@@ -15,7 +15,7 @@
       border 
       draggable
       :columns="myArray" 
-      :allColumns="allColumns">
+      :all-columns="allColumns">
       <el-table-column v-for="item in myArray" :key="item.id" :prop="item.prop" :column-key="item.prop"
                        :label="item.label" :width="item.width">
       </el-table-column>
@@ -102,12 +102,8 @@
 | columns | 用于显示的动态表格列 | array | -- | -- |
 | all-columns | 可选的所有表格列，也就是设置按钮中可选的列 | array | -- | -- |
 | popover-height | 设置按钮弹出层高度 | string | -- | 30vh |
-
-### Table Events
-| 事件名                   | 说明 | 参数 |
-|-----------------------|--| ---- |
-| handle-columns-change | 表格列发生变化和列宽发生变化时都会触发 | columns |
-| header-column-width-change | 表格列宽发生变化时触发（基于原生的header-dragend实现） | newWidth, oldWidth, column, event |
+| handle-columns-change | 表格列发生变化和列宽发生变化时都会触发 | Function(columns) | -- | -- |
+| header-column-width-change | 表格列宽发生变化时触发（基于原生的header-dragend实现） | Function(newWidth, oldWidth, column, event) | -- | -- |
 
 ### Table Methods
 | 方法名 | 说明 | 参数 |
