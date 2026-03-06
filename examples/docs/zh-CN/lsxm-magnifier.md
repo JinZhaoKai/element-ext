@@ -190,16 +190,28 @@ export default {
 :::demo 为`el-lsxm-magnifier`设置`clearable`属性，则可将选择器清空。需要注意的是，`clearable`属性仅适用于单选。
 ```html
 <template>
-    <el-lsxm-magnifier v-model="value" lsxm-value-key="id" label-key="name" clearable
-                       :search-param-prop="magnifierOptions.searchParamProp"
-                       :table-column-prop="magnifierOptions.tableColumnProp" :select-loading="magnifierOptions.loading"
-                       table-height="400px" placeholder="请输入" :remote-method="handleQuerySearchAsync"
-                       :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
+    <div class="block">
+        <span class="demonstration">单选模式</span>
+        <el-lsxm-magnifier v-model="value" lsxm-value-key="id" label-key="name" clearable
+                           :search-param-prop="magnifierOptions.searchParamProp"
+                           :table-column-prop="magnifierOptions.tableColumnProp" :select-loading="magnifierOptions.loading"
+                           table-height="400px" placeholder="请输入" :remote-method="handleQuerySearchAsync"
+                           :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
+    </div>
+    <div class="block">
+        <span class="demonstration">多选模式</span>
+        <el-lsxm-magnifier v-model="values" lsxm-value-key="id" label-key="name" clearable multiple
+                           :search-param-prop="magnifierOptions.searchParamProp"
+                           :table-column-prop="magnifierOptions.tableColumnProp" :select-loading="magnifierOptions.loading"
+                           table-height="400px" placeholder="请输入" :remote-method="handleQuerySearchAsync"
+                           :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
+    </div>
 </template>
 <script>
 export default {
     data() {return {
         value: 'Alabama',
+        values: ['Alabama', 'Alaska'],
         magnifierOptions: {
             "searchParamProp": [{
                 "label": "代码",
