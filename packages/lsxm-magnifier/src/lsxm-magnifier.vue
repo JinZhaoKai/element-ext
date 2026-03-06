@@ -18,7 +18,7 @@
           </el-col>
         </el-row>
       </el-option>
-      <i slot="suffix" class="el-select__caret el-input__icon el-icon-search is-reverse"
+      <i slot="suffix-inner" class="el-select__caret el-input__icon el-icon-search is-reverse"
          @click.stop="dialogVisible = true"></i>
     </el-select>
 

@@ -103,6 +103,7 @@
       <template slot="suffix" v-else>
         <i v-show="!showClose" :class="['el-select__caret', 'el-input__icon', 'el-icon-' + iconClass]"></i>
         <i v-if="showClose" class="el-select__caret el-input__icon el-icon-circle-close" @click="handleClearClick"></i>
+        <slot name="suffix-inner"></slot>
       </template>
     </el-input>
     <transition
