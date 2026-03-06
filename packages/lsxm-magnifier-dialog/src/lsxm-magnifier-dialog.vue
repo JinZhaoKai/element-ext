@@ -6,7 +6,8 @@
                  :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                  :enable-page="enablePage" :multiple="$attrs.multiple"
                  :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
-                 @lsxm-confirm="lsxmConfirm"></component>
+                 :init-load="initLoad" :init-load-params="initLoadParams"
+                 @lsxm-confirm="lsxmConfirm" @sync-list-fun="syncListFun"></component>
       <div slot="footer">
         <el-button size="small" @click="onCancel">取 消</el-button>
         <el-button size="small" type="primary" @click="onConfirm">确 定</el-button>
@@ -67,6 +68,21 @@ export default {
     lsxmConfirm: {
       type: Function,
       required: true
+    },
+    // 同步列表数据
+    syncListFun: {
+      type: Function,
+      required: true
+    },
+    // 组件渲染完成默认加载下拉数据
+    initLoad: {
+      type: Boolean,
+      default: true
+    },
+    // 初始化加载参数
+    initLoadParams: {
+      type: Object,
+      default: () => { return {}; }
     }
   },
   data() {

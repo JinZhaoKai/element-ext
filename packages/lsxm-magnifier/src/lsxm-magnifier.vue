@@ -11,7 +11,7 @@
           </el-col>
         </el-row>
       </div>
-      <el-option v-for="item in options" :key="item[lsxmValueKey]" :label="item[labelKey]" :value="item[lsxmValueKey]">
+      <el-option v-for="item in options" :key="getForKey(item)" :label="item[labelKey]" :value="item[lsxmValueKey]">
         <el-row type="flex" justify="space-between">
           <el-col v-for="tableColumn in tableColumnProp" :key="tableColumn.value">
             {{ item[tableColumn.value] }}
@@ -27,7 +27,8 @@
                               :search-param-prop="searchParamProp" :table-column-prop="tableColumnProp"
                               :lsxm-value-key="lsxmValueKey" :enable-page="enablePage" :multiple="$attrs.multiple"
                               :table-height="tableHeight" :table-remote-method="tableRemoteMethod"
-                              :lsxm-confirm="handleLsxmConfirm"></el-lsxm-magnifier-dialog>
+                              :lsxm-confirm="handleLsxmConfirm" :sync-list-fun="handleSyncListFun"
+                              :init-load="initLoad" :init-load-params="initLoadParams"></el-lsxm-magnifier-dialog>
   </div>
 </template>
 
@@ -95,27 +96,71 @@ export default {
       default: 'ElLsxmMagnifierDefaultPage'
     },
     // 表格远程查询函数
-    tableRemoteMethod: Function
+    tableRemoteMethod: Function,
+    // 组件渲染完成默认加载下拉数据
+    initLoad: {
+      type: Boolean,
+      default: true
+    },
+    // 初始化加载参数
+    initLoadParams: {
+      type: Object,
+      default: () => { return {}; }
+    }
   },
   data() {
     return {
       magnifierValue: this.value,
       dialogVisible: false,
+      initOptions: [],
+      basicOptions: [],
+      enableInitParams: true,
       searchParams: {},
-      options: [],
       total: 0
     };
+  },
+  computed: {
+    options: {
+      get() {
+        return this.basicOptions.concat(this.initOptions).reduce((acc, item) => {
+          const res = acc.some((obj) => {
+            const valueKey = this.$attrs['value-key'];
+            if (valueKey) {
+              return (obj[this.lsxmValueKey][valueKey] === item[this.lsxmValueKey][valueKey]);
+            } else {
+              return obj[this.lsxmValueKey] === item[this.lsxmValueKey];
+            }
+          });
+          if (!res) {
+            acc.push(item);
+          }
+          return acc;
+        }, []);
+      },
+      set(val) {
+        if (this.enableInitParams) {
+          this.initOptions = val;
+        } else {
+          this.basicOptions = val;
+        }
+      }
+    }
   },
   watch: {
     value(nv, ov) {
       this.magnifierValue = this.value;
+    },
+    initLoad: {
+      handler(nv) {
+        if (nv) {
+          this.lsxmRemoteMethod('');
+        }
+      },
+      immediate: true
     }
   },
   created() {
     this.initSearchParams();
-  },
-  mounted() {
-    this.lsxmRemoteMethod();
   },
   methods: {
     /**
@@ -139,6 +184,9 @@ export default {
           } else {
             console.error('[Element Error][Autocomplete]autocomplete suggestions must be an array');
           }
+        },
+        {
+          initLoadParams: this.enableInitParams ? this.initLoadParams : {}
         });
       }
     },
@@ -163,6 +211,17 @@ export default {
           }
         }
       }
+    },
+
+    handleSyncListFun(array) {
+      if (Array.isArray(array) && array.length > 0) {
+        this.basicOptions = array;
+      }
+    },
+
+    getForKey(item) {
+      const val = item[this.lsxmValueKey];
+      return typeof val === 'object' ? val[this.$attrs['value-key']] : val;
     }
 
   }

@@ -58,7 +58,17 @@ export default {
     // 表格是否支持多选
     multiple: Boolean,
     // 表格远程查询函数
-    tableRemoteMethod: Function
+    tableRemoteMethod: Function,
+    // 组件渲染完成默认加载下拉数据
+    initLoad: {
+      type: Boolean,
+      default: true
+    },
+    // 初始化加载参数
+    initLoadParams: {
+      type: Object,
+      default: () => { return {}; }
+    }
   },
   data() {
     return {
@@ -77,8 +87,16 @@ export default {
       }
     };
   },
-  created() {
-    this.initSearchParams();
+  watch: {
+    initLoad: {
+      handler(nv) {
+        if (nv) {
+          this.initSearchParams(this.initLoadParams);
+          this.loadTableData();
+        }
+      },
+      immediate: true
+    }
   },
   mounted() {
     this.loadTableData();
@@ -86,13 +104,14 @@ export default {
   methods: {
     /**
      * 初始化查询参数
+     * @param initParams
      */
-    initSearchParams() {
+    initSearchParams(initParams) {
       const obj = {};
       this.searchParamProp.forEach(item => {
         obj[item.value] = null;
       });
-      this.searchParams = obj;
+      this.searchParams = Object.assign(obj, initParams);
     },
     tableSelectionChange(selection) {
       this.selectedRowList = selection;
@@ -145,6 +164,7 @@ export default {
             this.pagination.totalCount = parsePageTotal(pageInfo);
           }
           this.tableData = list;
+          this.$emit('sync-list-fun', list);
           this.loading = false;
         });
       }
