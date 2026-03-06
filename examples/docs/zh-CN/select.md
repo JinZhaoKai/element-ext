@@ -564,6 +564,8 @@
 |---------|---------|
 |    —    | Option 组件列表 |
 | prefix  | Select 组件头部内容 |
+| suffix  | Select 组件尾部内容 |
+| suffix-inner  | Select 组件尾部内层内容 |
 | empty | 无选项时的列表 |
 
 ### Option Group Attributes

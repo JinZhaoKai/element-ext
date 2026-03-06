@@ -183,6 +183,95 @@ export default {
 ```
 :::
 
+### 可清空
+
+包含清空按钮，可将放大镜清空为初始状态
+
+:::demo 为`el-lsxm-magnifier`设置`clearable`属性，则可将选择器清空。需要注意的是，`clearable`属性仅适用于单选。
+```html
+<template>
+    <el-lsxm-magnifier v-model="value" lsxm-value-key="id" label-key="name" clearable
+                       :search-param-prop="magnifierOptions.searchParamProp"
+                       :table-column-prop="magnifierOptions.tableColumnProp" :select-loading="magnifierOptions.loading"
+                       table-height="400px" placeholder="请输入" :remote-method="handleQuerySearchAsync"
+                       :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
+</template>
+<script>
+export default {
+    data() {return {
+        value: 'Alabama',
+        magnifierOptions: {
+            "searchParamProp": [{
+                "label": "代码",
+                "value": "code"
+            }, {
+                "label": "名称",
+                "value": "name"
+            }],
+            "tableColumnProp": [{
+                "label": "代码",
+                "value": "code"
+            }, {
+                "label": "名称",
+                "value": "name"
+            }],
+            loading: false
+        },
+        list: [],
+        states: ["Alabama", "Alaska", "Arizona",
+            "Arkansas", "California", "Colorado",
+            "Connecticut", "Delaware", "Florida",
+            "Georgia", "Hawaii", "Idaho", "Illinois",
+            "Indiana", "Iowa", "Kansas", "Kentucky",
+            "Louisiana", "Maine", "Maryland",
+            "Massachusetts", "Michigan", "Minnesota",
+            "Mississippi", "Missouri", "Montana",
+            "Nebraska", "Nevada", "New Hampshire",
+            "New Jersey", "New Mexico", "New York",
+            "North Carolina", "North Dakota", "Ohio",
+            "Oklahoma", "Oregon", "Pennsylvania",
+            "Rhode Island", "South Carolina",
+            "South Dakota", "Tennessee", "Texas",
+            "Utah", "Vermont", "Virginia",
+            "Washington", "West Virginia", "Wisconsin",
+            "Wyoming"]
+    }
+    },
+    mounted() {
+        this.list = this.states.map(item => {
+            return { id: item, code: `code:${item}`, name: `name:${item}` };
+        });
+    },
+    methods: {
+        handleQuerySearchAsync(val, cb) {
+            this.handleQueryTableSearchAsync({
+                start: 0,
+                limit: 20,
+                name: val
+            }, cb)
+        },
+        handleQueryTableSearchAsync(searchParams, cb) {
+            if (searchParams.name && searchParams.name !== '') {
+                this.magnifierOptions.loading = true;
+                setTimeout(() => {
+                    this.magnifierOptions.loading = false;
+                    const arr = this.list.filter(item => item.name.toLowerCase().indexOf(searchParams.name.toLowerCase()) > -1);
+                    cb(arr.slice(searchParams.start, searchParams.limit + searchParams.start), arr.length)
+                }, 1000);
+            } else {
+                this.magnifierOptions.loading = true;
+                setTimeout(() => {
+                    this.magnifierOptions.loading = false;
+                    cb(this.list.slice(searchParams.start, searchParams.limit + searchParams.start), this.states.length)
+                }, 1000);
+            }
+        }
+    }
+}
+</script>
+```
+:::
+
 ### 事件用法
 
 展示放大镜在单选和多选模式的事件用法。
@@ -513,6 +602,7 @@ export default {
 | disabled | 是否禁用 | boolean | — | false |
 | value-key | 作为 value 唯一标识的键名，绑定值为对象类型时必填 | string | — | value |
 | size | 输入框尺寸 | string | medium/small/mini | — |
+| clearable | 是否可以清空选项 | boolean | — | false |
 | collapse-tags | 多选时是否将选中值按文字的形式展示 | boolean | — | false |
 | multiple-limit | 多选时用户最多可以选择的项目数，为 0 则不限制 | number | — | 0 |
 | name | select input 的 name 属性 | string | — | — |
