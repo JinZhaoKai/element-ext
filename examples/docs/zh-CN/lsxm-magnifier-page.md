@@ -24,3 +24,5 @@ LsxmMagnifierPage 从定义上是一个提供多样检索和详细数据展示�
 | enable-page | 是否开启分页，开启后传递到接口的参数会携带start和limit分页参数 | boolean | — | true |
 | table-remote-method | 放大镜对话框 Table 的远程搜索方法，第一个参数是查询参数；第二个参数是回调函数，用来回传接口查询到的数据。cb回调函数参数列表Function(list, total) | function | — | Function(searchParams, cb) |
 | lsxm-confirm | 用于返回选中值 | function | — | — |
+| initLoad | 组件渲染完成默认加载下拉数据 | boolean | — | true |
+| initLoadParams | 初始化加载参数 | object | — | {} |

@@ -15,7 +15,8 @@
                        table-height="400px" placeholder="请输入" :remote-method="handleQuerySearchAsync"
                        :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
 </template>
-<script>export default {
+<script>
+export default {
     data() {return {
         value: 'Alabama',
         magnifierOptions: {
@@ -94,10 +95,6 @@
 如果 Select 的绑定值为对象类型，请务必指定 `value-key` 作为它的唯一性标识。
 :::
 
-:::warning
-注意，当前版本如果放大镜开启了多选，是不支持绑定对象类型的，将在后续版本中支持。
-:::
-
 ### 基础多选
 
 适用性较广的基础多选，用 Tag 展示已选项。
@@ -110,13 +107,9 @@
                        :table-column-prop="magnifierOptions.tableColumnProp" :enable-page="true"
                        :select-loading="magnifierOptions.loading" table-height="400px" placeholder="请输入"
                        :remote-method="handleQuerySearchAsync" :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
-    <el-lsxm-magnifier v-model="value" lsxm-value-key="id" label-key="name" multiple collapse-tags
-                       :search-param-prop="magnifierOptions.searchParamProp"
-                       :table-column-prop="magnifierOptions.tableColumnProp" :enable-page="true"
-                       :select-loading="magnifierOptions.loading" table-height="400px" placeholder="请输入"
-                       :remote-method="handleQuerySearchAsync" :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
 </template>
-<script>export default {
+<script>
+export default {
     data() {return {
         value: ['Alabama'],
         magnifierOptions: {
@@ -219,7 +212,8 @@
                            @blur="handleBlur" @focus="handleFocus"></el-lsxm-magnifier>
     </div>
 </template>
-<script>export default {
+<script>
+export default {
     data() {return {
         value: 'Alabama',
         valueList: ['Alabama'],
@@ -309,6 +303,208 @@
 ```
 :::
 
+### 值对象
+
+选中的value可以是一个对象
+
+:::demo v-model绑定的值可能是一个Object，此时必须设置`value-key`是哪个字段。
+```html
+<template>
+    <el-lsxm-magnifier v-model="value" lsxm-value-key="obj" label-key="name" value-key="id"
+                       :search-param-prop="magnifierOptions.searchParamProp"
+                       :table-column-prop="magnifierOptions.tableColumnProp" :enable-page="true"
+                       :select-loading="magnifierOptions.loading" table-height="400px" placeholder="请输入"
+                       :remote-method="handleQuerySearchAsync" :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
+</template>
+<script>
+export default {
+    data() {
+      return {
+        value: { id: 1, label: 'Alabama' },
+        magnifierOptions: {
+            "searchParamProp": [{
+                "label": "代码",
+                "value": "code"
+            }, {
+                "label": "名称",
+                "value": "name"
+            }],
+            "tableColumnProp": [{
+                "label": "代码",
+                "value": "code"
+            }, {
+                "label": "名称",
+                "value": "name"
+            }],
+            loading: false
+        },
+        list: [],
+        states: ["Alabama", "Alaska", "Arizona",
+            "Arkansas", "California", "Colorado",
+            "Connecticut", "Delaware", "Florida",
+            "Georgia", "Hawaii", "Idaho", "Illinois",
+            "Indiana", "Iowa", "Kansas", "Kentucky",
+            "Louisiana", "Maine", "Maryland",
+            "Massachusetts", "Michigan", "Minnesota",
+            "Mississippi", "Missouri", "Montana",
+            "Nebraska", "Nevada", "New Hampshire",
+            "New Jersey", "New Mexico", "New York",
+            "North Carolina", "North Dakota", "Ohio",
+            "Oklahoma", "Oregon", "Pennsylvania",
+            "Rhode Island", "South Carolina",
+            "South Dakota", "Tennessee", "Texas",
+            "Utah", "Vermont", "Virginia",
+            "Washington", "West Virginia", "Wisconsin",
+            "Wyoming"]
+        }
+    },
+    mounted() {
+        let index = 0
+        this.list = this.states.map(item => {
+            index += 1
+            return {
+                id: item,
+                code: `${item}`,
+                name: `${item}`,
+                obj: { id: index, label: item },
+            }
+        });
+    },
+    methods: {
+        handleQuerySearchAsync(val, cb) {
+            this.handleQueryTableSearchAsync({
+                start: 0,
+                limit: 20,
+                name: val
+            }, cb)
+        },
+        handleQueryTableSearchAsync(searchParams, cb) {
+            if (searchParams.name && searchParams.name !== '') {
+                this.magnifierOptions.loading = true;
+                setTimeout(() => {
+                    this.magnifierOptions.loading = false;
+                    cb(this.list.slice(searchParams.start, searchParams.limit + searchParams.start), this.states.length)
+                }, 1000);
+            } else {
+                this.magnifierOptions.loading = true;
+                setTimeout(() => {
+                    this.magnifierOptions.loading = false;
+                    cb(this.list.slice(searchParams.start, searchParams.limit + searchParams.start), this.states.length)
+                }, 1000);
+            }
+        },
+    }
+}
+</script>
+```
+:::
+
+### 初始化数据
+
+放大镜数据的初始化功能
+
+:::demo 放大镜一般用在加载大量数据的场景上，加载数据的接口基本都需要分页，就会遇到绑定的数据不一定在第一页的情况，因此支持传递初始化参数去接口查询精确的数据
+```html
+<template>
+    <el-lsxm-magnifier v-model="value" lsxm-value-key="id" label-key="name"
+                       :search-param-prop="magnifierOptions.searchParamProp"
+                       :table-column-prop="magnifierOptions.tableColumnProp" :enable-page="true"
+                       :select-loading="magnifierOptions.loading" :init-load="magnifierOptions.initLoad"
+                       :init-load-params="magnifierOptions.initLoadParams" table-height="400px" placeholder="请输入"
+                       :remote-method="handleQuerySearchAsync" :table-remote-method="handleQueryTableSearchAsync"></el-lsxm-magnifier>
+</template>
+<script>
+export default {
+    data() {return {
+        value: 'Wyoming',
+        magnifierOptions: {
+            "searchParamProp": [{
+                "label": "代码",
+                "value": "code"
+            }, {
+                "label": "名称",
+                "value": "name"
+            }],
+            "tableColumnProp": [{
+                "label": "代码",
+                "value": "code"
+            }, {
+                "label": "名称",
+                "value": "name"
+            }],
+            loading: false,
+            initLoad: false,
+            initLoadParams: {}
+        },
+        list: [],
+        states: ["Alabama", "Alaska", "Arizona",
+            "Arkansas", "California", "Colorado",
+            "Connecticut", "Delaware", "Florida",
+            "Georgia", "Hawaii", "Idaho", "Illinois",
+            "Indiana", "Iowa", "Kansas", "Kentucky",
+            "Louisiana", "Maine", "Maryland",
+            "Massachusetts", "Michigan", "Minnesota",
+            "Mississippi", "Missouri", "Montana",
+            "Nebraska", "Nevada", "New Hampshire",
+            "New Jersey", "New Mexico", "New York",
+            "North Carolina", "North Dakota", "Ohio",
+            "Oklahoma", "Oregon", "Pennsylvania",
+            "Rhode Island", "South Carolina",
+            "South Dakota", "Tennessee", "Texas",
+            "Utah", "Vermont", "Virginia",
+            "Washington", "West Virginia", "Wisconsin",
+            "Wyoming"]
+    }
+    },
+    mounted() {
+        this.list = this.states.map(item => {
+            return { id: item, code: `code:${item}`, name: `name:${item}` };
+        });
+        this.handleGetView()
+    },
+    methods: {
+        handleQuerySearchAsync(val, cb, { initLoadParams }) {
+            this.handleQueryTableSearchAsync({
+                start: 0,
+                limit: 20,
+                name: val,
+                ...initLoadParams,
+            }, cb)
+        },
+        handleQueryTableSearchAsync(searchParams, cb) {
+            if (searchParams.name && searchParams.name !== '') {
+                this.magnifierOptions.loading = true;
+                setTimeout(() => {
+                    this.magnifierOptions.loading = false;
+                    const arr = this.list.filter((item) =>
+                            item.name.toLowerCase().includes(searchParams.name.toLowerCase())
+                    )
+                    cb(arr.slice(searchParams.start, searchParams.limit + searchParams.start), arr.length)
+                }, 1000);
+            } else {
+                this.magnifierOptions.loading = true;
+                setTimeout(() => {
+                    this.magnifierOptions.loading = false;
+                    cb(this.list.slice(searchParams.start, searchParams.limit + searchParams.start), this.states.length)
+                }, 1000);
+            }
+        },
+        handleGetView() {
+            setTimeout(() => {
+                // 假设这是详情接口返回的值生成的对象
+                this.magnifierOptions.initLoadParams = {
+                    name: 'Wyoming',
+                }
+                // 设置放大镜开始加载
+                this.magnifierOptions.initLoad = true
+            }, 1000)
+        }
+    }
+}
+</script>
+```
+:::
+
 ### Extends Select Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
@@ -342,6 +538,8 @@
 | custom-page-component | 自定义对话框组件名称 | string | — | ElLsxmMagnifierDefaultPage |
 | select-loading | 是否正在从远程获取数据 | boolean | — | false |
 | table-remote-method | 放大镜对话框 Table 的远程搜索方法，第一个参数是查询参数；第二个参数是回调函数，用来回传接口查询到的数据。cb回调函数参数列表Function(list, total) | function | — | Function(searchParams, cb) |
+| initLoad | 组件渲染完成默认加载下拉数据 | boolean | — | true |
+| initLoadParams | 初始化加载参数 | object | — | {} |
 
 ### Extends Select Events
 | 事件名称 | 说明 | 回调参数 |
