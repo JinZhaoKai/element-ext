@@ -147,6 +147,7 @@
     color: $--input-icon-color;
     transition: all .3s;
     pointer-events: none;
+    z-index: 9;
   }
 
   @include e(suffix-inner) {
